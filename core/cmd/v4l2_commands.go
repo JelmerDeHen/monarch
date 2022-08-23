@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"io/ioutil"
-  "os"
-  "strings"
-  "time"
+	"os"
+	"strings"
+	"time"
 
 	"github.com/urfave/cli/v2"
 
@@ -16,7 +16,7 @@ func ffmpegV4l2Argv() []string {
 	// Create out file
 	hostname, err := os.Hostname()
 	if err != nil {
-    panic(err)
+		panic(err)
 	}
 	now := time.Now()
 	outfile := fmt.Sprintf(
@@ -26,23 +26,23 @@ func ffmpegV4l2Argv() []string {
 		now.Hour(), now.Minute(), now.Second(),
 	)
 
-  video := "/dev/video0"
-  /*
-  var video string
-	name, err := findCameraByName("Logitech BRIO")
-	if err != nil {
-    video = "video0"
-	} else {
-    
-  }
-	video = fmt.Sprintf("/dev/%s", name)
-  fmt.Println(video)
-  */
+	video := "/dev/video0"
+	/*
+		  var video string
+			name, err := findCameraByName("Logitech BRIO")
+			if err != nil {
+		    video = "video0"
+			} else {
+
+		  }
+			video = fmt.Sprintf("/dev/%s", name)
+		  fmt.Println(video)
+	*/
 	arguments := []string{
 		"-nostdin", "-hide_banner",
 		"-loglevel", "warning",
 		"-f", "v4l2",
-    "-an",
+		"-an",
 		//        "-input_format", "yuyv422",
 		"-input_format", "mjpeg",
 		"-video_size", "1920x1080",
@@ -83,12 +83,12 @@ func findCameraByName(name string) (string, error) {
 	return "", fmt.Errorf("Could not find camera named %q", name)
 }
 
-func (cli *Client) V4l2 (cCtx *cli.Context) error {
+func (cli *Client) V4l2(cCtx *cli.Context) error {
 	fmt.Println("Start v4l2 ", cCtx.Args().First())
 
-  args := ffmpegV4l2Argv()
-  runner := xidle.NewCmdJob("ffmpeg", args...)
-  idlemon := xidle.NewIdlemon(runner)
+	args := ffmpegV4l2Argv()
+	runner := xidle.NewCmdJob("ffmpeg", args...)
+	idlemon := xidle.NewIdlemon(runner)
 	idlemon.Run()
 
 	return nil

@@ -1,9 +1,9 @@
 package main
 
 import (
-  "os"
+	"os"
 
-  "github.com/JelmerDeHen/monarch/core/cmd"
+	"github.com/JelmerDeHen/monarch/core/cmd"
 )
 
 func main() {

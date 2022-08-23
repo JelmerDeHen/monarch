@@ -1,9 +1,9 @@
 package cmd
 
 import (
-  "fmt"
-  "os"
-  "time"
+	"fmt"
+	"os"
+	"time"
 
 	"github.com/urfave/cli/v2"
 
@@ -13,9 +13,9 @@ import (
 
 func ffmpegX11grabArgv() []string {
 	// Create out file
-  hostname, err := os.Hostname()
+	hostname, err := os.Hostname()
 	if err != nil {
-    panic(err)
+		panic(err)
 	}
 	now := time.Now()
 	outfile := fmt.Sprintf(
@@ -25,33 +25,33 @@ func ffmpegX11grabArgv() []string {
 		now.Hour(), now.Minute(), now.Second(),
 	)
 
-  display := os.Getenv("DISPLAY")
-  if display == "" {
-    panic("$DISPLAY was empty")
-  }
+	display := os.Getenv("DISPLAY")
+	if display == "" {
+		panic("$DISPLAY was empty")
+	}
 
 	arguments := []string{
 		"-nostdin", "-hide_banner",
 		"-loglevel", "warning",
 		"-f", "x11grab",
-    "-an",
+		"-an",
 		"-framerate", "25",
-    "-video_size", scrnsaver.GetResolution(),
+		"-video_size", scrnsaver.GetResolution(),
 		"-i", os.Getenv("DISPLAY"),
 		"-vcodec", "libx265",
-    "-preset", "ultrafast",
+		"-preset", "ultrafast",
 		outfile,
 	}
 	return arguments
 }
 
-func (cli *Client) X11grab (cCtx *cli.Context) error {
+func (cli *Client) X11grab(cCtx *cli.Context) error {
 	fmt.Println("Start x11grab ", cCtx.Args().First())
 
-  args := ffmpegX11grabArgv()
-  runner := xidle.NewCmdJob("ffmpeg", args...)
-  idlemon := xidle.NewIdlemon(runner)
+	args := ffmpegX11grabArgv()
+	runner := xidle.NewCmdJob("ffmpeg", args...)
+	idlemon := xidle.NewIdlemon(runner)
 	idlemon.Run()
 
-  return nil
+	return nil
 }

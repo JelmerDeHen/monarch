@@ -1,9 +1,9 @@
 package cmd
 
 import (
-  "fmt"
-  "os"
-  "time"
+	"fmt"
+	"os"
+	"time"
 
 	"github.com/urfave/cli/v2"
 
@@ -12,9 +12,9 @@ import (
 
 func arecordArgv() []string {
 	// Create out file
-  hostname, err := os.Hostname()
+	hostname, err := os.Hostname()
 	if err != nil {
-    panic(err)
+		panic(err)
 	}
 	now := time.Now()
 	outfile := fmt.Sprintf(
@@ -26,22 +26,22 @@ func arecordArgv() []string {
 
 	arguments := []string{
 		"-D", "sysdefault:CARD=NTUSB",
-    "-t", "wav",
-    "-f", "S24_3LE",
-    "-r", "192000",
-    "-d", "3600",
-    outfile,
+		"-t", "wav",
+		"-f", "S24_3LE",
+		"-r", "192000",
+		"-d", "3600",
+		outfile,
 	}
 	return arguments
 }
 
-func (cli *Client) Arecord (cCtx *cli.Context) error {
+func (cli *Client) Arecord(cCtx *cli.Context) error {
 	fmt.Println("Start arecord ", cCtx.Args().First())
 
-  args := arecordArgv()
-  runner := xidle.NewCmdJob("arecord", args...)
-  idlemon := xidle.NewIdlemon(runner)
+	args := arecordArgv()
+	runner := xidle.NewCmdJob("arecord", args...)
+	idlemon := xidle.NewIdlemon(runner)
 	idlemon.Run()
 
-  return nil
+	return nil
 }

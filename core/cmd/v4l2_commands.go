@@ -26,13 +26,18 @@ func ffmpegV4l2Argv() []string {
 		now.Hour(), now.Minute(), now.Second(),
 	)
 
-  video string
+  video := "/dev/video0"
+  /*
+  var video string
 	name, err := findCameraByName("Logitech BRIO")
 	if err != nil {
     video = "video0"
-	}
+	} else {
+    
+  }
 	video = fmt.Sprintf("/dev/%s", name)
-
+  fmt.Println(video)
+  */
 	arguments := []string{
 		"-nostdin", "-hide_banner",
 		"-loglevel", "warning",

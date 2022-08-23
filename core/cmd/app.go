@@ -22,6 +22,11 @@ func NewApp(client *Client) *cli.App {
 				Action: client.X11grab,
 			},
 			{
+				Name: "arecord",
+				Usage: "start arecord service",
+				Action: client.Arecord,
+			},
+			{
 				Name: "xidle",
 				Usage: "test xidle",
 				Action: client.Xidle,

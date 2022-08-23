@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	run(newProductionClient(), os.Args...)
+	run(newClient(), os.Args...)
 }
 
 func run(client *cmd.Client, args ...string) {

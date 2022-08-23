@@ -1,9 +1,7 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
-	"time"
 
 	"github.com/urfave/cli/v2"
 
@@ -11,25 +9,7 @@ import (
 	"github.com/JelmerDeHen/xidle"
 )
 
-func ffmpegX11grabArgv() []string {
-	// Create out file
-	hostname, err := os.Hostname()
-	if err != nil {
-		panic(err)
-	}
-	now := time.Now()
-	outfile := fmt.Sprintf(
-		"/data/mon/srec_new/%s.%02d%02d%02d.%02d%02d%02d.mkv",
-		hostname,
-		now.Year(), now.Month(), now.Day(),
-		now.Hour(), now.Minute(), now.Second(),
-	)
-
-	display := os.Getenv("DISPLAY")
-	if display == "" {
-		panic("$DISPLAY was empty")
-	}
-
+func (cli *Client) X11grab(cCtx *cli.Context) error {
 	arguments := []string{
 		"-nostdin", "-hide_banner",
 		"-loglevel", "warning",
@@ -40,17 +20,15 @@ func ffmpegX11grabArgv() []string {
 		"-i", os.Getenv("DISPLAY"),
 		"-vcodec", "libx265",
 		"-preset", "ultrafast",
-		outfile,
+		"${OUTFILE}",
 	}
-	return arguments
-}
 
-func (cli *Client) X11grab(cCtx *cli.Context) error {
-	fmt.Println("Start x11grab ", cCtx.Args().First())
+	job := xidle.NewCmdJob("ffmpeg", arguments...)
+	job.OutfileGenerator = func() string {
+		return getOutfilename("/data/mon/srec_new/", "mkv")
+	}
 
-	args := ffmpegX11grabArgv()
-	runner := xidle.NewCmdJob("ffmpeg", args...)
-	idlemon := xidle.NewIdlemon(runner)
+	idlemon := xidle.NewIdlemon(job)
 	idlemon.Run()
 
 	return nil

@@ -1,4 +1,3 @@
-.DEFAULT_GOAL := build
 
 build:
 				mkdir -pv bin

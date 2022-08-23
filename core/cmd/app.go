@@ -21,6 +21,11 @@ func NewApp(client *Client) *cli.App {
 				Usage: "start x11grab service",
 				Action: client.X11grab,
 			},
+			{
+				Name: "xidle",
+				Usage: "test xidle",
+				Action: client.Xidle,
+			},
 		},
   }
 	return &app

@@ -17,9 +17,6 @@ func run(client *cmd.Client, args ...string) {
 	}
 }
 
-func newProductionClient() *cmd.Client {
-//	lggr, closeLggr := logger.NewLogger()
-//	prompter := cmd.NewTerminalPrompter()
-	return &cmd.Client{
-	}
+func newClient() *cmd.Client {
+	return &cmd.Client{}
 }

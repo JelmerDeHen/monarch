@@ -10,7 +10,7 @@ func (cli *Client) V4l2(cCtx *cli.Context) error {
 	args := []string{
 		"-nostdin", "-hide_banner",
 		"-loglevel", "warning",
-    "-y",
+		"-y",
 		"-f", "v4l2",
 		"-an",
 		//        "-input_format", "yuyv422",

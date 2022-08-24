@@ -13,6 +13,7 @@ func (cli *Client) X11grab(cCtx *cli.Context) error {
 	arguments := []string{
 		"-nostdin", "-hide_banner",
 		"-loglevel", "warning",
+    "-y",
 		"-f", "x11grab",
 		"-an",
 		"-framerate", "25",

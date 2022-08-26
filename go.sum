@@ -1,14 +1,6 @@
 github.com/BurntSushi/toml v1.1.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/JelmerDeHen/scrnsaver v0.0.0-20220823081036-0e665b3c786d h1:MwUz8cYCxd0Y4hFOPfxK9cM+eT7LRXAsI89Md9RVBDc=
 github.com/JelmerDeHen/scrnsaver v0.0.0-20220823081036-0e665b3c786d/go.mod h1:T28lCuvVEg6NNEFvqbfAfcXoek7yLmw9JNxl0ErIcj4=
-github.com/JelmerDeHen/xidle v0.0.0-20220823183918-42b2825ced97 h1:cKdzN9LFGJReFXchEfTEerrLkZkB19/kMV0bKkmoTiE=
-github.com/JelmerDeHen/xidle v0.0.0-20220823183918-42b2825ced97/go.mod h1:0vjj7bS/qUEQIYjTXZqqp2gzMH2hvS1/rOIl0SS5WDQ=
-github.com/JelmerDeHen/xidle v0.0.0-20220823184525-91adbd0e3024 h1:4DVBttGgF5uYiro4A42iDgcjHau7ka3Himfow8bfeks=
-github.com/JelmerDeHen/xidle v0.0.0-20220823184525-91adbd0e3024/go.mod h1:0vjj7bS/qUEQIYjTXZqqp2gzMH2hvS1/rOIl0SS5WDQ=
-github.com/JelmerDeHen/xidle v0.0.0-20220823185157-e1518a7c06ed h1:XnIaxNgXDacpKTR/RleB2+b556XdvMNybt894Xr+PYM=
-github.com/JelmerDeHen/xidle v0.0.0-20220823185157-e1518a7c06ed/go.mod h1:0vjj7bS/qUEQIYjTXZqqp2gzMH2hvS1/rOIl0SS5WDQ=
-github.com/JelmerDeHen/xidle v0.0.0-20220823185506-df8a32938a07 h1:CNNbR9cjfCN7omWxOVpwZpe0hR1UMC81srBT95lsxRg=
-github.com/JelmerDeHen/xidle v0.0.0-20220823185506-df8a32938a07/go.mod h1:0vjj7bS/qUEQIYjTXZqqp2gzMH2hvS1/rOIl0SS5WDQ=
 github.com/JelmerDeHen/xidle v0.0.0-20220823185619-f4a0b62533dc h1:74jt5ypm8u5UeGC30u9Rri8FZ1ZpQHfSvv/XlSP1+VM=
 github.com/JelmerDeHen/xidle v0.0.0-20220823185619-f4a0b62533dc/go.mod h1:0vjj7bS/qUEQIYjTXZqqp2gzMH2hvS1/rOIl0SS5WDQ=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=

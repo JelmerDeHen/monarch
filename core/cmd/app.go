@@ -31,6 +31,11 @@ func NewApp(client *Client) *cli.App {
 				Usage:  "test xidle",
 				Action: client.Xidle,
 			},
+			{
+				Name:   "compress",
+				Usage:  "Compress output",
+				Action: client.Compress,
+			},
 		},
 	}
 	return &app

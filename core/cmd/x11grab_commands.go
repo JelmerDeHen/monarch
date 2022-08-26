@@ -16,7 +16,7 @@ func (cli *Client) X11grab(cCtx *cli.Context) error {
 		"-y",
 		"-f", "x11grab",
 		"-an",
-		"-framerate", "25",
+		"-r", "1",
 		"-video_size", scrnsaver.GetResolution(),
 		"-i", os.Getenv("DISPLAY"),
 		"-vcodec", "libx265",

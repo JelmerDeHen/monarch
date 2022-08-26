@@ -1,0 +1,229 @@
+package compress
+
+import (
+	"fmt"
+	"os"
+	"time"
+
+	"github.com/JelmerDeHen/scrnsaver"
+)
+
+type Pipeline struct {
+	Service    string
+	Indir      string
+	Outdir     string
+	InfileExt  string
+	OutfileExt string
+	Argv       []string
+}
+
+// var Pipelines map[string]*Pipeline
+var Pipelines = make(map[string]*Pipeline)
+
+/*
+TODO: parse this from config file like
+{
+  "x11grab": {
+    "Service": "monarch_x11grab",
+    "Indir": "/data/mon/srec_new",
+    "Outdir": "/data/mon/srec_new_compress",
+    "IndirExt": "mkv",
+    "OutdirExt": "mp4",
+    "Argv": ["-an"],
+  },
+  ...
+}
+*/
+
+func init() {
+	Pipelines["x11grab"] = &Pipeline{
+		Service:    "monarch_x11grab",
+		Indir:      "/data/mon/srec_new",
+		Outdir:     "/data/mon/srec_new_compress",
+		InfileExt:  "mkv",
+		OutfileExt: "mp4",
+		Argv:       []string{"-an"},
+	}
+	Pipelines["arecord"] = &Pipeline{
+		Service:    "monarch_arecord",
+		Indir:      "/data/mon/arecord_new",
+		Outdir:     "/data/mon/arecord_new_compress",
+		InfileExt:  "wav",
+		OutfileExt: "mp3",
+		Argv:       []string{},
+	}
+	Pipelines["v4l2"] = &Pipeline{
+		Service:    "monarch_v4l2",
+		Indir:      "/data/mon/v4l2_new",
+		Outdir:     "/data/mon/v4l2_new_compress",
+		InfileExt:  "mkv",
+		OutfileExt: "mp4",
+		Argv:       []string{"-an"},
+	}
+}
+
+func (p *Pipeline) VerifyDirAccess() error {
+	// Check p.Indir
+	fi, err := os.Stat(p.Indir)
+	if err != nil {
+		return err
+	}
+	if !fi.IsDir() {
+		return fmt.Errorf("%s is not a directory", p.Indir)
+	}
+
+	//fmt.Println(fi.IsDir(), err)
+
+	// Check if p.Outdir exists
+	fi, err = os.Stat(p.Outdir)
+	if err != nil {
+		return err
+	}
+	if !fi.IsDir() {
+		return fmt.Errorf("%s is not a directory", p.Outdir)
+	}
+
+	// Check if outdir is writable
+	tmpfile := fmt.Sprintf("%s/.test", p.Outdir)
+	_, err = os.Create(tmpfile)
+	if err != nil {
+		return err
+	}
+	err = os.Remove(tmpfile)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func errIfNotIdleFor(t time.Duration) error {
+	// Check if user has been idle for long enough to start compressing
+	info, err := scrnsaver.GetXScreenSaverInfo()
+	if err != nil {
+		return err
+	}
+
+	if info.Idle < t {
+		return fmt.Errorf("errIfNotIdle(): Stop: info.Idle.Seconds()=%vs", info.Idle.Seconds())
+	}
+	return nil
+}
+
+func (p *Pipeline) Scan() error {
+	// Finds & removes empty files
+	err := p.RemoveEmptyFiles()
+	if err != nil {
+		return err
+	}
+
+	// Finds & removes lockfiles
+	err = p.ReleaseLocks()
+	if err != nil {
+		return err
+	}
+
+	// Find & removes files in Outdir that have not been completely processed
+	err = p.RemovePartialCompressions()
+	if err != nil {
+		return err
+	}
+
+	// Look for completed jobs & remove infiles
+	err = p.RemoveProcessedFiles()
+	if err != nil {
+		return err
+	}
+
+	// Verify access to Indir & Outdir
+	err = p.VerifyDirAccess()
+	if err != nil {
+		return err
+	}
+
+	// Read Indir contents
+	fps, err := p.getFilePathsByIndir()
+	if err != nil {
+		return err
+	}
+
+	for _, fp := range fps {
+		// Only run when user is afk
+		/*
+		   err = errIfNotIdleFor(time.Second)
+		   if err != nil {
+		     return err
+		   }
+		*/
+
+		// Check for locks
+		if fp.InLock.IsLocked() {
+			fmt.Printf("Scan(): Skip: found infile lock:\t\t%q\n", fp.InLock)
+			continue
+		}
+
+		if fp.Done.IsLocked() {
+			fmt.Printf("Scan(): Skip: found done lock:\t\t%q\n", fp.Done)
+			continue
+		}
+
+		if fp.OutLock.IsLocked() {
+			fmt.Printf("Scan(): Skip: found outfile lock:\t%q\n", fp.OutLock)
+			continue
+		}
+
+		// Check if outfile already exists
+		_, err = os.Stat(fp.Out)
+		if err == nil {
+			// We could just rm it here and continue execution
+			// This will be picked up by RemovePartialCompressions() in future run
+			//fmt.Printf("Scan(): Outfile has no lock or done file: rm %q\n", fp.Out)
+			//os.Remove(fp.Out)
+			continue
+		}
+
+		if isFileBusy(fp.In) {
+			fmt.Printf("Scan(): Infile is busy: %q\n", fp.In)
+			continue
+		}
+
+		// Prepare for exec - setup locks
+		err = fp.InLock.Lock()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		err = fp.OutLock.Lock()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		// Compress
+		err = FfmpegCompress(fp.In, fp.Out, p.Argv)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		err = fp.Done.Lock()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		// Release the infile and outfile locks
+		err = fp.InLock.Release()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		err = fp.OutLock.Release()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+	}
+	return nil
+}

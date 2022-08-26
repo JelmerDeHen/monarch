@@ -1,6 +1,6 @@
 [Timer]
 OnBootSec=0min
-OnUnitActiveSec=1min
+OnUnitActiveSec=30min
 #OnCalendar=*:0/1
 
 [Install]

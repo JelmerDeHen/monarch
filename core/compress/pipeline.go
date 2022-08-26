@@ -38,8 +38,8 @@ TODO: parse this from config file like
 func init() {
 	Pipelines["x11grab"] = &Pipeline{
 		Service:    "monarch_x11grab",
-		Indir:      "/data/mon/srec_new",
-		Outdir:     "/data/mon/srec_new_compress",
+		Indir:      "/data/mon/x11grab",
+		Outdir:     "/data/mon/x11grab_compress",
 		InfileExt:  "mkv",
 		OutfileExt: "mp4",
 		Argv:       []string{"-an"},
@@ -54,8 +54,8 @@ func init() {
 	}
 	Pipelines["v4l2"] = &Pipeline{
 		Service:    "monarch_v4l2",
-		Indir:      "/data/mon/v4l2_new",
-		Outdir:     "/data/mon/v4l2_new_compress",
+		Indir:      "/data/mon/v4l2",
+		Outdir:     "/data/mon/v4l2_compress",
 		InfileExt:  "mkv",
 		OutfileExt: "mp4",
 		Argv:       []string{"-an"},
@@ -148,13 +148,11 @@ func (p *Pipeline) Scan() error {
 	}
 
 	for _, fp := range fps {
-		// Only run when user is afk
-		/*
-		   err = errIfNotIdleFor(time.Second)
-		   if err != nil {
-		     return err
-		   }
-		*/
+		// Only run when user was afk for at least one minute
+		err = errIfNotIdleFor(time.Minute)
+		if err != nil {
+			return err
+		}
 
 		// Check for locks
 		if fp.InLock.IsLocked() {

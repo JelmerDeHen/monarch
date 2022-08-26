@@ -1,0 +1,2 @@
+[Service]
+ExecStart=/data/p/monarch/bin/monarch compress

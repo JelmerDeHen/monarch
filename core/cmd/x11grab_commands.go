@@ -26,7 +26,7 @@ func (cli *Client) X11grab(cCtx *cli.Context) error {
 
 	job := xidle.NewCmdJob("ffmpeg", arguments...)
 	job.OutfileGenerator = func() string {
-		return getOutfilename("/data/mon/srec_new/", "mkv")
+		return getOutfilename("/data/mon/x11grab/", "mkv")
 	}
 
 	idlemon := xidle.NewIdlemon(job)

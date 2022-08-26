@@ -24,7 +24,7 @@ func (cli *Client) V4l2(cCtx *cli.Context) error {
 	job := xidle.NewCmdJob("ffmpeg", args...)
 
 	job.OutfileGenerator = func() string {
-		name := getOutfilename("/data/mon/v4l2_new/", "mkv")
+		name := getOutfilename("/data/mon/v4l2/", "mkv")
 		return name
 	}
 

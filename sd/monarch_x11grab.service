@@ -1,12 +1,2 @@
-[Unit]
-After=wm_xorg.service
-
 [Service]
 ExecStart=/data/p/monarch/bin/monarch x11grab
-#Restart=always
-#RestartSec=1
-
-[Install]
-# TODO: Hook Xorg somehow instead
-WantedBy=wm_xorg.service
-#graphical.target

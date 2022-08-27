@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"os"
-	"time"
 
 	"github.com/urfave/cli/v2"
 

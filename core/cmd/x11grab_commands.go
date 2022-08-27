@@ -18,7 +18,7 @@ func (cli *Client) X11grab(cCtx *cli.Context) error {
 		"-an",
 		"-r", "1",
 		"-video_size", "${RESOLUTION}",
-		"-i", os.Getenv("DISPLAY"),
+		"-i", "${ENV[DISPLAY]}",
 		"-vcodec", "libx265",
 		"-preset", "ultrafast",
 		"${OUTFILE}",

@@ -10,8 +10,9 @@ func (cli *Client) Arecord(cCtx *cli.Context) error {
 	args := []string{
 		"-D", "sysdefault:CARD=NTUSB",
 		"-t", "wav",
-		"-f", "S24_3LE",
-		"-r", "192000",
+		"-f", "cd",
+		//"-f", "S24_3LE",
+		//"-r", "41000",
 		"-d", "3600",
 		"${OUTFILE}",
 	}

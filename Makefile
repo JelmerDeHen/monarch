@@ -1,4 +1,7 @@
 
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+BIN:=${ROOT_DIR}/bin/monarch
+
 build:
 				mkdir -pv bin
 				go build -o bin/monarch ./core/
@@ -8,6 +11,7 @@ clean:
 
 install:
 				cp -v sd/monarch_* "${HOME}/.config/systemd/user"
+				sed -i 's\BIN\${BIN}\g' /home/system/.config/systemd/user/monarch_*.service
 				systemctl --user enable monarch_arecord.timer
 				systemctl --user enable monarch_compress.timer
 				systemctl --user enable monarch_v4l2.timer

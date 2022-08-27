@@ -18,7 +18,7 @@ func (cli *Client) Arecord(cCtx *cli.Context) error {
 	job := xidle.NewCmdJob("arecord", args...)
 
 	job.OutfileGenerator = func() string {
-		return getOutfilename("/data/mon/arecord_new/", "wav")
+		return getOutfilename("/data/mon/arecord", "wav")
 	}
 
 	idlemon := xidle.NewIdlemon(job)

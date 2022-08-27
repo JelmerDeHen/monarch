@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-	//  "time"
+	"time"
 
 	"github.com/urfave/cli/v2"
 
@@ -10,10 +9,15 @@ import (
 )
 
 func (cli *Client) Xidle(cCtx *cli.Context) error {
-	fmt.Println("Start idlecmd ", cCtx.Args().First())
+	job := xidle.NewCmdJob("sleep", "1337")
 
-	runner := xidle.NewCmdJob("sleep", "1337")
-	idlemon := xidle.NewIdlemon(runner)
+	// Configure durations to something we can wait for
+	// When user present last second spawn
+	// When user idle over 5 secs kill
+	idlemon := xidle.NewIdlemon(job)
+	idlemon.IdleLessT = time.Second
+	idlemon.IdleOverT = time.Second * 5
+
 	idlemon.Run()
 
 	return nil

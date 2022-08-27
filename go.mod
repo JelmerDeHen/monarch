@@ -3,8 +3,8 @@ module github.com/JelmerDeHen/monarch
 go 1.17
 
 require (
-	github.com/JelmerDeHen/scrnsaver v0.0.0-20220823081036-0e665b3c786d
-	github.com/JelmerDeHen/xidle v0.0.0-20220823185619-f4a0b62533dc
+	github.com/JelmerDeHen/scrnsaver v0.0.0-20220827073217-d8af05db8655
+	github.com/JelmerDeHen/xidle v0.0.0-20220827104546-8f94becf33b9
 	github.com/urfave/cli/v2 v2.11.2
 )
 

@@ -46,8 +46,8 @@ func init() {
 	}
 	Pipelines["arecord"] = &Pipeline{
 		Service:    "monarch_arecord",
-		Indir:      "/data/mon/arecord_new",
-		Outdir:     "/data/mon/arecord_new_compress",
+		Indir:      "/data/mon/arecord",
+		Outdir:     "/data/mon/arecord_compress",
 		InfileExt:  "wav",
 		OutfileExt: "mp3",
 		Argv:       []string{},
@@ -105,7 +105,7 @@ func errIfNotIdleFor(t time.Duration) error {
 	}
 
 	if info.Idle < t {
-		return fmt.Errorf("errIfNotIdle(): Stop: info.Idle.Seconds()=%vs", info.Idle.Seconds())
+		return fmt.Errorf("Stop: user is not afk")
 	}
 	return nil
 }

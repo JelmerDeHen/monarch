@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -11,8 +12,10 @@ func getOutfilename(dir, ext string) string {
 	hostname, _ := os.Hostname()
 	now := time.Now()
 
+	dir = strings.TrimSuffix(dir, "/")
+
 	fn := fmt.Sprintf(
-		"%s%s.%02d%02d%02d.%02d%02d%02d.%s",
+		"%s/%s.%02d%02d%02d.%02d%02d%02d.%s",
 		dir,
 		hostname,
 		now.Year(), now.Month(), now.Day(),

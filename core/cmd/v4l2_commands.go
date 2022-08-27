@@ -10,7 +10,10 @@ func (cli *Client) V4l2(cCtx *cli.Context) error {
 	args := []string{
 		"-nostdin", "-hide_banner",
 		"-loglevel", "warning",
+		// Overwrites existing outfile
 		"-y",
+		// Rotate after 1 hour
+		"-t", "3600",
 		"-f", "v4l2",
 		"-an",
 		//        "-input_format", "yuyv422",
@@ -24,9 +27,10 @@ func (cli *Client) V4l2(cCtx *cli.Context) error {
 	job := xidle.NewCmdJob("ffmpeg", args...)
 
 	job.OutfileGenerator = func() string {
-		name := getOutfilename("/data/mon/v4l2/", "mkv")
+		name := getOutfilename("/data/mon/v4l2", "mkv")
 		return name
 	}
+	job.KillSignal = os.Interrupt
 
 	idlemon := xidle.NewIdlemon(job)
 	idlemon.Run()

@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/JelmerDeHen/scrnsaver v0.0.0-20220827073217-d8af05db8655
-	github.com/JelmerDeHen/xidle v0.0.0-20220827112659-359ed3eb329e
+	github.com/JelmerDeHen/xidle v0.0.0-20220828231933-d3d9733d83c2
 	github.com/urfave/cli/v2 v2.11.2
 )
 

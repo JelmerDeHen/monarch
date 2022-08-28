@@ -15,8 +15,8 @@ func (cli *Client) Xidle(cCtx *cli.Context) error {
 	// When user present last second spawn
 	// When user idle over 5 secs kill
 	idlemon := xidle.NewIdlemon(job)
-	idlemon.IdleLessT = time.Second
-	idlemon.IdleOverT = time.Second * 5
+	idlemon.IdleLessTimeout = time.Second
+	idlemon.IdleOverTimeout = time.Second * 5
 
 	idlemon.Run()
 
